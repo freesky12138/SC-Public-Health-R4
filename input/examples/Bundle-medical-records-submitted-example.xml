@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="http://hl7.org/fhir">
+	<id value="Bundle-medical-records-submitted-example"/>
+	<type value="message"/>
+	<!--************************消息头****************************-->
+	<entry>
+		<resource>
+			<MessageHeader xmlns="http://hl7.org/fhir">
+				<!--1.1 消息ID（实例ID，重发不变）-->
+				<id value="MessageHeader-0004"/>
+				<!--消息事件 1..1-->
+				<eventCoding>
+					<!-- 0..1 事件类型 CodeSystem url  -->
+					<system value="http://CodeSystem.hl7fhir.cn/activity-code"/>
+					<!-- 0..1 事件类型代码-->
+					<code value="C01004"/>
+					<!-- 0..1 事件类型名称 -->
+					<display value="完整病历上传"/>
+				</eventCoding>
+				<!-- 1..1 消息源应用程序 -->
+				<source>
+					<!-- 0..1 系统名称（发送消息的系统） -->
+					<name value="[string]"/>
+					<!-- 0..1 软件名称（子系统名称） -->
+					<software value="[string]"/>
+					<!-- 0..1 运行的软件版本（当前版本） -->
+					<version value="[string]"/>
+					<!-- 1..1 ID地址(当前操作客户端IP地址) -->
+					<endpoint value="[uri]"/>
+				</source>
+				<!--消息实际内容 0..*-->
+				<focus>
+					<!-- 0..1 Reference(Task) 关联任务信息（Task） -->
+					<reference value="Task/Task-medical-records-submitted"/>
+				</focus>
+				<!-- 0..1 canonical(MessageDefinition) Link to the definition for this message -->
+ 				<definition value="http://MessageDefinition.hl7fhir.cn/medical-records-submitted"/>
+				
+			</MessageHeader>
+		</resource>
+	</entry>
+	<!--************************病历提交任务（Task）******************************-->
+	<entry>
+		<resource>
+			<Task xmlns="http://hl7.org/fhir">
+				<id value="Task-medical-records-submitted"/>
+				<!-- 0..1 canonical(ActivityDefinition) 关联ActivityDefinition -->
+				<instantiatesCanonical value="http://ActivityDefinition.hl7fhir.cn/medical-records-submitted"/>
+					
+				<!-- 1..1 状态 draft | requested | received | accepted | + -->
+				<status value="requested"/>
+				<!-- 1..1 目的 unknown | proposal | plan | order | original-order | reflex-order | filler-order | instance-order | option -->
+				<intent value="proposal"/>
+				<!-- 0..1 CodeableConcept 事件类型 -->
+				<businessStatus>
+					<coding>
+						<!-- 0..1 事件类型 CodeSystem url  -->
+						<system value="http://CodeSystem.hl7fhir.cn/activity-code"/>
+						<!-- 0..1 事件类型代码-->
+						<code value="C01004"/>
+						<!-- 0..1 事件类型名称 -->
+						<display value="完整病历上传"/>
+					</coding>
+				</businessStatus>
+				<!-- 0..1 CodeableConcept Task Type 任务类型-->
+				<code>
+					<coding>
+						<!-- 0..1 任务类型 CodeSystem url  -->
+						<system value="http://hl7.org/fhir/CodeSystem/task-code"/>
+						<!-- 0..1 任务类型代码-->
+						<code value="approve"/>
+						<!-- 0..1 任务类型名称 -->
+						<display value="Activate/approve the focal resource"/>
+					</coding>
+				</code>
+				<!-- 0..1 任务描述 -->
+				<description value="患者到转入医院办理手续入院后，转出医院上传病历信息。"/>
+				<!-- 0..1 Reference(Any) 关联该任务正在处理的资源 -->
+				<focus>
+					<reference value="List/List001-example"/>
+				</focus>
+				<!-- ?? 0..1 任务创建日期 -->
+				<authoredOn value="2019-02-10T13:00:00Z"/>
+				<!-- ?? 0..1 最后更新日期 -->
+				<lastModified value="2019-02-10T13:00:00Z"/>
+				<!-- 0..1 任务创建者，关联医护人员 -->
+				<requester>
+					<reference value="Practitioner/Practitioner001-example"/>
+				</requester>
+				<!-- 0..* 任务备注 -->
+				<note>
+					<!-- 1..1 The annotation  - text content (as markdown) -->
+					<text value="[markdown]"/>
+				</note>
+			</Task>
+		</resource>
+	</entry>
+</Bundle>
