@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 此资源所引用的内容都将作为指南的一部分生成。持续更新中 -->
 <ImplementationGuide xmlns="http://hl7.org/fhir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../input-cache/schemas/R5/fhir-single.xsd">
-	<id value="public-health.hl7fhir.cn.core.r4"/>
+	<id value="SC-Public-Health-IG"/>
 	<!--  <extension url="http://hl7.org/fhir/tools/StructureDefinition/igpublisher-spreadsheet">
     <valueString value="resources-spreadsheet.xml"/>
   </extension>-->
-	<url value="http://press.hl7fhir.cn/ImplementationGuide/CN-Core-R4"/>
+	<url value="http://press.hl7fhir.cn/ImplementationGuide/SC-Public-Health-R4"/>
 	<!-- 此实施指南的版本。除非指定了 "propagate-version" 扩展元素，否则所有引用资源都将继承此版本号 -->
 	<version value="0.0.2"/>
-	<name value="Public Health IG"/>
-	<title value="公卫实施指南"/>
+	<name value="SC Public Health IG"/>
+	<title value="四川省公卫实施指南"/>
 	<status value="draft"/>
 	<experimental value="true"/>
 	<publisher value="HL7FHIR.CN" />
@@ -23,7 +23,8 @@
 			<value value="contact@hl7fhir.cn"/>
 		</telecom>
 	</contact>
-	<description value="基于FHIR R4基础规范的公共卫生实施指南。集成了GB国标、WS行标，且根据中国卫生行业特点和公共卫生的业务场景对资源进行了资源修剪、扩展注册。 "/>
+	<description value="四川省公卫实施指南是[中国核心实施指南](http://build.fhir.org/ig/HL7China/CN-CORE-R4/)规范集中的一个子规范。
+它基于核心指南定义了四川省公共卫生信息化所涉及的通用资源与常用场景，它与其它子规范一起组成了中国核心指南的规范集。"/>
 	<jurisdiction>
 		<coding>
 			<system value="http://CodeSystem.hl7fhir.cn/countries-and-regions"/>
@@ -31,7 +32,7 @@
 		</coding>
 		<text value="中国"/>
 	</jurisdiction>
-	<packageId value="public-health.hl7fhir.cn.core.r4" />
+	<packageId value="hl7fhir.cn.core.r4.public-health.sc" />
 	<!-- 参见 https://spdx.org/licenses/AGPL-3.0-or-later.html -->
 	<license value="AGPL-3.0-or-later" />
 	<!-- 实施指南里的内容是基于FHIR R4版本的 -->
@@ -383,7 +384,7 @@
 			</page>
 			<page>
                 <nameUrl value="spec.html"/>
-                <title value="核心规范"/>
+                <title value="规范定义"/>
                 <generation value="markdown"/>
 
                <page>
@@ -418,12 +419,18 @@
 
            </page>
 
-
-			  <page>
+<page>
+<nameUrl value="useage-scenarios.html"/>
+<title value="使用场景"/>
+<generation value="markdown"/>
+			<page>
                  <nameUrl value="hospital-referral.html"/>
 				<title value="双向转诊-住院"/>
 				<generation value="markdown"/> 
               </page>
+</page>
+
+			 
 
 		  	 <page>
                <nameUrl value="downloads.html"/>
