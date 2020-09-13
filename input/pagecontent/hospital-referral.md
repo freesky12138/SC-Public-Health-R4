@@ -21,19 +21,19 @@
  双向转诊流-住院流程分为“预约申请”、“预约应答”、“到诊应答”、“上传病历”四个步骤，
 使用[ActivityDefinition](http://www.hl7fhir.cn/R4/activitydefinition.html)资源分别定义如下：
 
-- [转诊预约申请-ActivityDefinition定义](ActivityDefinition-ActivityDefinition-application-for-referral-appointment.html)
-- [转诊预约应答-ActivityDefinition定义](ActivityDefinition-ActivityDefinition-application-for-referral-appointment-response.html)
-- [患者到诊应答-ActivityDefinition定义](ActivityDefinition-ActivityDefinition-patient-arrive-response.html)
-- [上传完整病历-ActivityDefinition定义](ActivityDefinition-ActivityDefinition-medical-records-submitted.html)
+- [转诊预约申请-ActivityDefinition定义](ActivityDefinition-application-for-referral-appointment.html)
+- [转诊预约应答-ActivityDefinition定义](ActivityDefinition-application-for-referral-appointment-response.html)
+- [患者到诊应答-ActivityDefinition定义](ActivityDefinition-patient-arrive-response.html)
+- [上传完整病历-ActivityDefinition定义](ActivityDefinition-medical-records-submitted.html)
 
 > 使用[PlanDefinition](http://www.hl7fhir.cn/R4/plandefinition.html)资源定义双向转诊-住院的业务流程：
-[住院双转流程-PlanDefinition定义](PlanDefinition-PlanDefinition-hospital-referral.html)，
+[住院双转流程-PlanDefinition定义](PlanDefinition-hospital-referral.html)，
 它通过其Action元素将以上四个步骤组装起来。每个Action关联一个步骤。可以通过此流程定义资源实例实现流程自动化。
 转诊预约申请活动为该流程的第一步，转诊申请发起后，根据转诊预约应答来确定后续步骤，如果为不同意，结束流程，如果为同意，等待患者到诊应答，患者到诊应答结束后，上传完整病历信息。
 
 ### 活动实例资源
  [ActivityDefinition](http://www.hl7fhir.cn/R4/activitydefinition.html)活动定义中有一个kind元素，此元素描述了该活动具体使用哪种资源类型,即活动实例资源类型。
-比如[转诊预约申请-ActivityDefinition定义](ActivityDefinition-ActivityDefinition-application-for-referral-appointment.html)的活动实例资源类型为继承自Appointment资源类型的[HospitalReferral](StructureDefinition-hospital-referral.html)资源。
+比如[转诊预约申请-ActivityDefinition定义](ActivityDefinition-application-for-referral-appointment.html)的活动实例资源类型为继承自Appointment资源类型的[HospitalReferral](StructureDefinition-hospital-referral.html)资源。
 此场景中涉及的活动实例资源如下：
 
 - [HospitalReferral](StructureDefinition-hospital-referral.html):转诊预约申请资源，该资源描述医院转诊的的申请。包括上转、下转都使用该资源。
@@ -74,17 +74,17 @@ FHIR的数据交换方式支持RESTful、SOA、消息交换等。本场景目前
 ### 消息体结构定义
 资源捆束中条目中的资源类型在不同的业务活动（步骤）中是不同的，
 本规范集使用[MessageDefinition](http://www.hl7fhir.cn/R4/messagedefinition.html)定义每个活动数据交换的消息体结构，
-遵循[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的Action元素对应的步骤定义。每个活动步骤的数据交换消息体结构的定义如下：
+遵循[住院双转流程定义](PlanDefinition-hospital-referral.html)中的Action元素对应的步骤定义。每个活动步骤的数据交换消息体结构的定义如下：
 
-- 一、[转诊预约申请-MessageDefinition定义](MessageDefinition-MessageDefinition-hospital-referral.html)：
+- 一、[转诊预约申请-MessageDefinition定义](MessageDefinition-hospital-referral.html)：
 在转出医疗机构向转入医疗机构发起转诊预约申请时使用的消息体结构的定义。该消息要求作出消息应答：
 	- 1.转入机构收到转诊申请后，根据自身情况和患者病情，审核是否通过转诊，审批通过后，作出应答。
 	- 2.患者到达转入机构，办理手续后，发起患者到诊应答。
-- 二、[转诊预约应答-MessageDefinition定义](MessageDefinition-MessageDefinition-hospital-referral-response.html)：
+- 二、[转诊预约应答-MessageDefinition定义](MessageDefinition-hospital-referral-response.html)：
 在转入医疗机构收到转出医疗机构发起的转诊申请后，回复转出机构是否审批通过时使用的消息体结构的定义。
-- 三、[患者到诊应答-MessageDefinition定义](MessageDefinition-MessageDefinition-patient-arrive-response.html)：
+- 三、[患者到诊应答-MessageDefinition定义](MessageDefinition-patient-arrive-response.html)：
 当转诊患者到达转入医疗机构后，转入医疗机构向转出医疗机构发送的消息体结构的定义。该消息要求作出消息应答：上传完整病历。
-- 四、[上传完整病历-MessageDefinition定义](MessageDefinition-MessageDefinition-medical-records-submitted.html)：
+- 四、[上传完整病历-MessageDefinition定义](MessageDefinition-medical-records-submitted.html)：
 在转出医疗机构收到患者到诊应答消息后，上传完整患者完整病历时使用的消息体结构的定义。
 
 ### 相关业务资源  
@@ -128,23 +128,23 @@ FHIR的数据交换方式支持RESTful、SOA、消息交换等。本场景目前
 > 具体流程：
 
 1. 转出医院根据获取到的双转平台的科室床位资源情况，发起转诊预约申请，附带基本病情介绍发送到双转平台。
-该步骤符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第一个action节点定义的步骤-转诊预约申请，
-按照[转诊预约申请消息定义](MessageDefinition-MessageDefinition-hospital-referral.html)的消息结构使用
+该步骤符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第一个action节点定义的步骤-转诊预约申请，
+按照[转诊预约申请消息定义](MessageDefinition-hospital-referral.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见： [转诊预约申请消息交换示例](Bundle-Bundle-hospital-referral-example.html)。
 2. 双转平台根据实际情况进行审批，通过双转平台下发转诊预约应答到转出医院。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第二个action节点定义的步骤-转诊预约应答，
-按照[转诊预约应答消息定义](MessageDefinition-MessageDefinition-hospital-referral-response.html)的消息结构使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第二个action节点定义的步骤-转诊预约应答，
+按照[转诊预约应答消息定义](MessageDefinition-hospital-referral-response.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[转诊预约应答消息交换示例](Bundle-Bundle-hospital-referral-response-example.html)。
 3. 患者到转入医院报到后，办理入院手续，双转平台回传患者到诊应答到转出医院。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第三个action节点定义的步骤-患者到诊应答，
-按照[患者到诊应答消息定义](MessageDefinition-MessageDefinition-patient-arrive-response.html)的消息结构使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第三个action节点定义的步骤-患者到诊应答，
+按照[患者到诊应答消息定义](MessageDefinition-patient-arrive-response.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[患者到诊应答消息交换示例](Bundle-Bundle-patient-arrive-response-example.html)。
 4. 根据到诊通知，转出医院上传该患者相关的病历资料到双转平台。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第四个action节点定义的步骤-上传完整病历，
-按照[上传完整病历消息定义](MessageDefinition-MessageDefinition-medical-records-submitted.html)的消息结构使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第四个action节点定义的步骤-上传完整病历，
+按照[上传完整病历消息定义](MessageDefinition-medical-records-submitted.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[上传完整病历消息交换示例](Bundle-Bundle-medical-records-submitted-example.html)。
 
@@ -155,22 +155,22 @@ FHIR的数据交换方式支持RESTful、SOA、消息交换等。本场景目前
 > 具体流程：
 
 1. 转出医院根据获取到的双转平台的科室床位资源情况，发起转诊预约申请，附带基本病情介绍发送到双转平台。
-该步骤符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第一个action节点定义的步骤-转诊预约申请，
-按照[转诊预约申请消息定义](MessageDefinition-MessageDefinition-hospital-referral.html)的消息结构使用
+该步骤符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第一个action节点定义的步骤-转诊预约申请，
+按照[转诊预约申请消息定义](MessageDefinition-hospital-referral.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见： [转诊预约申请消息交换示例](Bundle-Bundle-hospital-referral-example.html)。
 2. 双转平台根据实际情况进行审批，下发转诊预约应答到转出医院。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第二个action节点定义的步骤-转诊预约应答，
-按照[转诊预约应答消息定义](MessageDefinition-MessageDefinition-hospital-referral-response.html)的消息结构使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第二个action节点定义的步骤-转诊预约应答，
+按照[转诊预约应答消息定义](MessageDefinition-hospital-referral-response.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[转诊预约应答消息交换示例](Bundle-Bundle-hospital-referral-response-example.html)。
 3. 患者到转入医院报到后，办理入院手续，双转平台回传患者到诊通知到转出医院。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第三个action节点定义的步骤-患者到诊应答，
-按照[患者到诊应答消息定义](MessageDefinition-MessageDefinition-patient-arrive-response.html)的消息结构使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第三个action节点定义的步骤-患者到诊应答，
+按照[患者到诊应答消息定义](MessageDefinition-patient-arrive-response.html)的消息结构使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[患者到诊应答消息交换示例](Bundle-Bundle-patient-arrive-response-example.html)。
 4. 根据到诊通知，转出医院上传该患者相关的病历资料到双转平台。
-该流程符合流程定义[住院双转流程定义](PlanDefinition-PlanDefinition-hospital-referral.html)中的第四个action节点定义的步骤-上传完整病历，
-按照[上传完整病历消息定义](MessageDefinition-MessageDefinition-medical-records-submitted.html)的消息结构定义使用
+该流程符合流程定义[住院双转流程定义](PlanDefinition-hospital-referral.html)中的第四个action节点定义的步骤-上传完整病历，
+按照[上传完整病历消息定义](MessageDefinition-medical-records-submitted.html)的消息结构定义使用
 [Bundle](http://www.hl7fhir.cn/R4/bundle.html)组装数据并发送。
 具体示例参见：[上传完整病历消息交换示例](Bundle-Bundle-medical-records-submitted-example.html)。
